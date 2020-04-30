@@ -26,41 +26,43 @@
             <button type="submit" class="btn btn-info btn-block" @click.prevent="performLogin">Login</button>
           </div>
         </form>
+
+        <circle-spin v-show="isLoading"></circle-spin>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
   name: "login",
   data() {
     return {
       email: "",
       password: "",
-      error: ""
+      error: "",
+      isLoading: false
     };
   },
   methods: {
     performLogin() {
-      axios
-        .post("http://localhost:8000/api/auth/login", {
+      this.isLoading = true;
+      this.$store
+        .dispatch("performLoginAction", {
           email: this.email,
           password: this.password
         })
         .then(res => {
           console.log(res.data);
-          // store the token and user in localstorage
-          // const token = localStorage.setItem("token", res.data.access_token)
-          // const user = localStorage.setItem("user", res.data.user)
+          this.isLoading = false;
           this.$router.push("/profile");
         })
         .catch(err => {
+          this.isLoading = false;
+          this.error = " There was error during login process";
           console.log(err.message);
-          this.error = err.message;
         });
-      console.log("perfom login");
     }
   }
 };

@@ -42,9 +42,10 @@ export default {
           name: this.user.name,
           email: this.user.email
         })
-        // .then(res => {
-        //   console.log("profile was update");
-        // })
+        .then(res => {
+          console.log(res.data);
+          console.log("profile was update");
+        })
         .catch(err => {
           console.log(err);
         });
